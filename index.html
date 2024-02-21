@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake in Vanilla Javascript</title>
+  <style>
+    :root {
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      font-weight: 400;
+      color-scheme: dark light;
+      color: rgba(255, 255, 255, 0.87);
+      background-color: #242424;
+
+    }
+
+    body {
+      background-color: #666;
+      display: grid;
+      place-content: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    canvas {
+      border: 4px solid #000;
+      background-color: #8345;
+      margin: 0 auto;
+      display: block;
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Snake Game</h1>
+    <canvas></canvas>
+  </div>
+  <script>
+
+    const BLOCK_SIZE = 20
+    const BOARD_WIDTH = 30
+    const BOARD_HEIGHT = 30
+
+    const canvas = document.querySelector('canvas')
+    const context = canvas.getContext('2d')
+
+    canvas.width = BLOCK_SIZE * BOARD_WIDTH
+    canvas.height = BLOCK_SIZE * BOARD_HEIGHT
+
+    context.scale(BLOCK_SIZE, BLOCK_SIZE)
+
+    console.log(canvas)
+
+    const DIRECTIONS = {
+      UP: 0,
+      DOWN: 1,
+      RIGHT: 2,
+      LEFT: 3
+    }
+
+    const CENTER_X = Math.floor(canvas.width)
+    const CENTER_Y = Math.floor(canvas.height)
+
+    const snake = {
+      //Initialization
+      size: 1,
+      direction: DIRECTIONS.RIGHT,
+      body: [ //First block
+        {
+          x: CENTER_X,
+          y: CENTER_Y
+        }
+      ],
+      move: function () {
+        this.grow() //Add block at the beggining
+        this.body.pop() //Remove last block
+      },
+      grow: function () {
+        //Add block at the beggining
+        const newX = this.body[0].x + this.direction === DIRECTIONS.RIGHT ? 1 : this.direction === DIRECTIONS.LEFT ? -1 : 0
+        const newY = this.body[0].y + this.direction === DIRECTIONS.DOWN ? 1 : this.direction === DIRECTIONS.UP ? -1 : 0
+
+        this.body.unshift(
+          {
+            x: newX,
+            y: newY
+          }
+        )
+      },
+      draw: function () {
+
+      }
+    }
+
+
+  </script>
+</body>
+
+</html>
