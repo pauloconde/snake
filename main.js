@@ -73,7 +73,7 @@ function cleanCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height)
   }
 
-// speed of render
+// speed
 const fps = 5;
 
 let msPrev = window.performance.now();
@@ -83,6 +83,8 @@ let frames = 0;
 let framesPerSec = fps;
 
 function game() {
+
+    //regresh rate
     window.requestAnimationFrame(game);
 
     const msNow = window.performance.now();
@@ -101,15 +103,15 @@ function game() {
         frames = 0;
     }
 
+    //game
     cleanCanvas();
-    // hay que dibujar los elementos
     snake.draw();
     snake.grow()
 }
 
+//Keyboard control
 function initEvents() {
     document.addEventListener("keydown", keyDownHandler);
-    document.addEventListener("keyup", keyUpHandler);
 
     function keyDownHandler(event) {
         const { key } = event;
@@ -122,8 +124,20 @@ function initEvents() {
         } else if (key === "Down" || key === "ArrowDown") {
             snake.direction = DIRECTIONS.DOWN
         }
+
+        
     }
 }
 
+//Prevent scrollbar movement with arrow keys
+document.onkeydown = function(elEvento) {
+    var evento = elEvento || window.event;
+    var codigo = evento.keyCode;
+    if(codigo > 36 && codigo < 41){ //Flechas
+      return false;
+    }
+  }
+
+//Start game
 game();
 initEvents();
