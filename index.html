@@ -14,7 +14,6 @@
       color-scheme: dark light;
       color: rgba(255, 255, 255, 0.87);
       background-color: #242424;
-
     }
 
     body {
@@ -47,7 +46,7 @@
       justify-content: space-between;
     }
 
-    .box>div:first-child {
+    .box>#title {
       background-color: rgb(20, 72, 86);
       padding: 20px;
       padding-top: 5px;
@@ -57,7 +56,7 @@
       margin-left: 25px;
     }
 
-    .box>div:nth-child(2) {
+    .box>#subtitle {
       align-self:flex-end ;
       padding-right: 15px;
       margin-bottom: -15px;
@@ -68,13 +67,17 @@
 
 <body>
   <div class="box">
-    <div>
+    <div id="title">
       <h1>Snake Game</h1>
     </div>
-    <div><h4>Made only with Javascript without using libraries.</h4></div>
+    <div id="subtitle"><h4>Made only with Javascript without using libraries.</h4></div>
   </div>
   <canvas></canvas>
-  <audio id="beep" src="beep.mp3" type=""audio/mpeg></audio>
+  <div class="box">
+    <div><button>-</button> Speed <span id="speed">5</span> <button>+</button></div>
+    <div> Snake Size: <span id=""size>0</span></div>
+  </div>
+  <audio id="beep" src="beep2.mp3" type=""audio/mpeg></audio>
   <script type="module" src="/main.js"></script>
 </body>
 

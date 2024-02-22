@@ -5,7 +5,7 @@ const BOARD_HEIGHT = 64;
 const sound = document.getElementById("beep");
 
 // speed
-const FPS = 5;
+const FPS = 15;
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
@@ -73,43 +73,63 @@ let snake = {
   },
 };
 
-function cleanCanvas() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-}
+let meal = {
+  x: 0,
+  y: 0,
+  new: function () {
+    let _occupedPosition = true;
 
-function drawMeal() {}
+    while (_occupedPosition) {
+      this.x = Math.floor(Math.random() * BOARD_WIDTH);
+      this.y = Math.floor(Math.random() * BOARD_HEIGHT);
+      _occupedPosition = snake.body.some(({ xx, yy }) => {
+        return xx === this.x && yy === this.y;
+      });
+    }
+  },
+  draw: function () {
+    context.beginPath();
+    context.fillStyle = "#f7845b";
+    context.arc(this.x + 0.5, this.y + 0.5, 0.5, 0, Math.PI * 2);
+    context.fill();
+    context.closePath();
+  },
+};
+
+function checkEat() {
+  if(snake.body[0].x === meal.x && snake.body[0].y=== meal.y) {
+    meal.new();
+    snake.grow();
+  }
+}
 
 function checkCollisions() {
   //Border collisions
-  if (
-    snake.body[0].x >= BOARD_WIDTH ||
-    snake.body[0].x <= -1
-  ) {
+  if (snake.body[0].x >= BOARD_WIDTH || snake.body[0].x <= -1) {
     return true;
-  } else if (
-    snake.body[0].y >= BOARD_HEIGHT ||
-    snake.body[0].y <= -1
-  ) {
+  } else if (snake.body[0].y >= BOARD_HEIGHT || snake.body[0].y <= -1) {
     return true;
   }
 
   const _withoutHead = [].concat(snake.body);
   const _head = _withoutHead.shift();
 
-   return _withoutHead.some(({x,y})=>{
-    return (x === _head.x && y === _head.y)
-  })
-
+  return _withoutHead.some(({ x, y }) => {
+    return x === _head.x && y === _head.y;
+  });
 }
 
-function beep(){
+function beep() {
   sound.play();
 }
 
 function gameOver() {
   beep();
   snake.init();
-  temp = 0;
+}
+
+function cleanCanvas() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 let msPrev = window.performance.now();
@@ -117,8 +137,6 @@ let msFPSPrev = window.performance.now() + 1000;
 const msPerFrame = 1000 / FPS;
 let frames = 0;
 let framesPerSec = FPS;
-
-let temp = 0;
 
 function game() {
   //regresh rate
@@ -140,18 +158,13 @@ function game() {
     frames = 0;
   }
 
-  
-
   //game
   cleanCanvas();
 
-  if (temp < 20) {
-    snake.grow();
-  } else {
-    snake.move();
-  }
-  temp++;
   snake.draw();
+  meal.draw();
+  snake.move();
+  checkEat();
 
   if (checkCollisions()) {
     //restart game
@@ -189,5 +202,6 @@ document.onkeydown = function (elEvento) {
 
 //Start game
 snake.init();
-game();
+meal.new();
 initEvents();
+game();
