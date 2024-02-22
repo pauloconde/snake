@@ -107,7 +107,13 @@ function checkCollisions() {
   return _collision;
 }
 
+function beep(){
+  const sonido = document.getElementById("beep");
+  sonido.play();
+}
+
 function gameOver() {
+  beep();
   snake.init();
   temp = 0;
 }
