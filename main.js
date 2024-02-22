@@ -2,6 +2,9 @@ const BLOCK_SIZE = 12;
 const BOARD_WIDTH = 64;
 const BOARD_HEIGHT = 64;
 
+// speed
+const FPS = 5;
+
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 
@@ -9,8 +12,6 @@ canvas.width = BLOCK_SIZE * BOARD_WIDTH;
 canvas.height = BLOCK_SIZE * BOARD_HEIGHT;
 
 context.scale(BLOCK_SIZE, BLOCK_SIZE);
-
-console.log(canvas);
 
 const DIRECTIONS = {
   UP: {
@@ -78,20 +79,46 @@ function drawMeal() {}
 
 function checkCollisions() {
   //Border collisions
-  if (snake.body[0].x > BOARD_WIDTH || snake.body[0].x < 0) {
+  if (
+    snake.body[0].x >= BOARD_WIDTH ||
+    snake.body[0].x <= -1
+  ) {
     return true;
-  } else if (snake.body[0].y > BOARD_HEIGHT || snake.body[0].y < 0) {
+  } else if (
+    snake.body[0].y >= BOARD_HEIGHT ||
+    snake.body[0].y <= -1
+  ) {
     return true;
-  } else return false;
+  }
+
+  const _withoutHead = [].concat(snake.body);
+  const _head = _withoutHead.shift();
+
+  let _collision = false;
+
+  _withoutHead.forEach(({ x, y }) => {
+    if (x === _head.x && y === _head.y) {
+      _collision = true;
+      snake.init();
+    }
+  });
+
+  //console.log(_collision)
+  return _collision;
 }
-// speed
-const fps = 5;
+
+function gameOver() {
+  snake.init();
+  temp = 0;
+}
 
 let msPrev = window.performance.now();
 let msFPSPrev = window.performance.now() + 1000;
-const msPerFrame = 1000 / fps;
+const msPerFrame = 1000 / FPS;
 let frames = 0;
-let framesPerSec = fps;
+let framesPerSec = FPS;
+
+let temp = 0;
 
 function game() {
   //regresh rate
@@ -113,16 +140,22 @@ function game() {
     frames = 0;
   }
 
+  
+
   //game
   cleanCanvas();
-  snake.draw();
-  snake.grow();
 
-  console.log(checkCollisions());
+  if (temp < 20) {
+    snake.grow();
+  } else {
+    snake.move();
+  }
+  temp++;
+  snake.draw();
 
   if (checkCollisions()) {
     //restart game
-    snake.init();
+    gameOver();
   }
 }
 
