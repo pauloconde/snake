@@ -2,6 +2,8 @@ const BLOCK_SIZE = 12;
 const BOARD_WIDTH = 64;
 const BOARD_HEIGHT = 64;
 
+const sound = document.getElementById("beep");
+
 // speed
 const FPS = 5;
 
@@ -94,22 +96,14 @@ function checkCollisions() {
   const _withoutHead = [].concat(snake.body);
   const _head = _withoutHead.shift();
 
-  let _collision = false;
+   return _withoutHead.some(({x,y})=>{
+    return (x === _head.x && y === _head.y)
+  })
 
-  _withoutHead.forEach(({ x, y }) => {
-    if (x === _head.x && y === _head.y) {
-      _collision = true;
-      snake.init();
-    }
-  });
-
-  //console.log(_collision)
-  return _collision;
 }
 
 function beep(){
-  const sonido = document.getElementById("beep");
-  sonido.play();
+  sound.play();
 }
 
 function gameOver() {
