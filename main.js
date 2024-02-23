@@ -7,6 +7,8 @@ const sound = document.getElementById("beep");
 // speed
 const FPS = 15;
 
+let isPlaying = false;
+
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 
@@ -125,7 +127,7 @@ function beep() {
 
 function gameOver() {
   beep();
-  snake.init();
+  isPlaying = false;
 }
 
 function cleanCanvas() {
@@ -158,17 +160,19 @@ function game() {
     frames = 0;
   }
 
-  //game
-  cleanCanvas();
+  if (isPlaying) {
+    //game
+    cleanCanvas();
 
-  snake.draw();
-  meal.draw();
-  snake.move();
-  checkEat();
+    snake.draw();
+    meal.draw();
+    snake.move();
+    checkEat();
 
-  if (checkCollisions()) {
-    //restart game
-    gameOver();
+    if (checkCollisions()) {
+      //restart game
+      gameOver();
+    }
   }
 }
 
@@ -194,7 +198,12 @@ function initEvents() {
       if (snake.direction != DIRECTIONS.UP) {
         snake.direction = DIRECTIONS.DOWN;
       }
+    } else if (key === " ") {
+      meal.new();
+      snake.init();
+      isPlaying = true;
     }
+    console.log(key)
   }
 }
 
