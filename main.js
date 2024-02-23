@@ -97,7 +97,7 @@ let meal = {
 };
 
 function checkEat() {
-  if(snake.body[0].x === meal.x && snake.body[0].y=== meal.y) {
+  if (snake.body[0].x === meal.x && snake.body[0].y === meal.y) {
     meal.new();
     snake.grow();
   }
@@ -179,13 +179,21 @@ function initEvents() {
   function keyDownHandler(event) {
     const { key } = event;
     if (key === "Right" || key === "ArrowRight") {
-      snake.direction = DIRECTIONS.RIGHT;
+      if (snake.direction != DIRECTIONS.LEFT) {
+        snake.direction = DIRECTIONS.RIGHT;
+      }
     } else if (key === "Left" || key === "ArrowLeft") {
-      snake.direction = DIRECTIONS.LEFT;
+      if (snake.direction != DIRECTIONS.RIGHT) {
+        snake.direction = DIRECTIONS.LEFT;
+      }
     } else if (key === "Up" || key === "ArrowUp") {
-      snake.direction = DIRECTIONS.UP;
+      if (snake.direction != DIRECTIONS.DOWN) {
+        snake.direction = DIRECTIONS.UP;
+      }
     } else if (key === "Down" || key === "ArrowDown") {
-      snake.direction = DIRECTIONS.DOWN;
+      if (snake.direction != DIRECTIONS.UP) {
+        snake.direction = DIRECTIONS.DOWN;
+      }
     }
   }
 }
