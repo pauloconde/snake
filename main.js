@@ -8,6 +8,7 @@ const sound = document.getElementById("beep");
 const FPS = 15;
 
 let isPlaying = false;
+let firstTime = true;
 
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
@@ -98,6 +99,21 @@ let meal = {
   },
 };
 
+function startMessage() {
+  context.beginPath();
+  context.fillStyle = "#ccc";
+  context.textAlign = "center";
+  context.fillText("Press SPACE to start", BOARD_WIDTH / 2, BOARD_HEIGHT / 2);
+  context.closePath();
+}
+function gameOverMessage() {
+  context.beginPath();
+  context.fillStyle = "#333";
+  context.textAlign = "center";
+  context.fillText("GAME OVER", BOARD_WIDTH / 2, BOARD_HEIGHT / 2 - 4);
+  context.closePath();
+}
+
 function checkEat() {
   if (snake.body[0].x === meal.x && snake.body[0].y === meal.y) {
     meal.new();
@@ -127,10 +143,12 @@ function beep() {
 
 function gameOver() {
   beep();
+  firstTime = false;
   isPlaying = false;
 }
 
 function cleanCanvas() {
+  context.font = "bold 3px sans-serif";
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -159,20 +177,21 @@ function game() {
     framesPerSec = frames;
     frames = 0;
   }
+  cleanCanvas();
 
   if (isPlaying) {
     //game
-    cleanCanvas();
-
     snake.draw();
     meal.draw();
     snake.move();
     checkEat();
 
     if (checkCollisions()) {
-      //restart game
       gameOver();
     }
+  } else {
+    startMessage();
+    if (!firstTime) gameOverMessage();
   }
 }
 
@@ -203,7 +222,7 @@ function initEvents() {
       snake.init();
       isPlaying = true;
     }
-    console.log(key)
+    console.log(key);
   }
 }
 
@@ -218,6 +237,7 @@ document.onkeydown = function (elEvento) {
 };
 
 //Start game
+startMessage();
 snake.init();
 meal.new();
 initEvents();
