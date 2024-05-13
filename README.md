@@ -15,6 +15,11 @@ Para jugar, simplemente abre el archivo `index.html` en tu navegador web preferi
 
 ## Instalación
 
-No se requiere instalación. Clona este repositorio o descarga el código fuente para empezar a jugar:
+No se requiere instalación. Clona este repositorio o descarga el código fuente para empezar a jugar.
+
+## Autor 
+Paulo Conde
+pauloconde@gmail.com 
+pauloconde.dev
 
 
